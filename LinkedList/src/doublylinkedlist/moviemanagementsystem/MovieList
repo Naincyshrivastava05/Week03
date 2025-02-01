@@ -1,0 +1,184 @@
+package doublylinkedlist.moviemanagementsystem;
+
+// MovieList class to manage the doubly linked list of movies
+class MovieList {
+    private MovieNode head;
+    private MovieNode tail;
+
+    // Constructor
+    public MovieList() {
+        this.head = null;
+        this.tail = null;
+    }
+
+    // Add a movie at the beginning of the list
+    public void addMovieAtBeginning(String title, String director, int year, double rating) {
+        MovieNode newMovie = new MovieNode(title, director, year, rating);
+        if (head == null) {
+            head = tail = newMovie;
+        } else {
+            newMovie.next = head;
+            head.prev = newMovie;
+            head = newMovie;
+        }
+    }
+
+    // Add a movie at the end of the list
+    public void addMovieAtEnd(String title, String director, int year, double rating) {
+        MovieNode newMovie = new MovieNode(title, director, year, rating);
+        if (tail == null) {
+            head = tail = newMovie;
+        } else {
+            newMovie.prev = tail;
+            tail.next = newMovie;
+            tail = newMovie;
+        }
+    }
+
+    // Add a movie at a specific position
+    public void addMovieAtPosition(String title, String director, int year, double rating, int position) {
+        if (position == 0) {
+            addMovieAtBeginning(title, director, year, rating);
+            return;
+        }
+        MovieNode newMovie = new MovieNode(title, director, year, rating);
+        MovieNode current = head;
+        for (int i = 0; i < position - 1; i++) {
+            if (current == null) {
+                throw new IndexOutOfBoundsException("Position out of bounds");
+            }
+            current = current.next;
+        }
+        if (current == null) {
+            throw new IndexOutOfBoundsException("Position out of bounds");
+        }
+        newMovie.next = current.next;
+        newMovie.prev = current;
+        if (current.next != null) {
+            current.next.prev = newMovie;
+        } else {
+            tail = newMovie;
+        }
+        current.next = newMovie;
+    }
+
+    // Remove a movie by title
+    public void removeMovieByTitle(String title) {
+        MovieNode current = head;
+        while (current != null) {
+            if (current.title.equals(title)) {
+                if (current.prev != null) {
+                    current.prev.next = current.next;
+                } else {
+                    head = current.next;
+                }
+                if (current.next != null) {
+                    current.next.prev = current.prev;
+                } else {
+                    tail = current.prev;
+                }
+                return;
+            }
+            current = current.next;
+        }
+        System.out.println("Movie not found: " + title);
+    }
+
+    // Search for movies by director
+    public void searchByDirector(String director) {
+        MovieNode current = head;
+        boolean found = false;
+        while (current != null) {
+            if (current.director.equals(director)) {
+                System.out.println("Movie Found: " + current.title + " (" + current.year + ") - Rating: " + current.rating);
+                found = true;
+            }
+            current = current.next;
+        }
+        if (!found) {
+            System.out.println("No movies found for director: " + director);
+        }
+    }
+
+    // Search for movies by rating
+    public void searchByRating(double rating) {
+        MovieNode current = head;
+        boolean found = false;
+        while (current != null) {
+            if (current.rating == rating) {
+                System.out.println("Movie Found: " + current.title + " (" + current.year + ") - Director: " + current.director);
+                found = true;
+            }
+            current = current.next;
+        }
+        if (!found) {
+            System.out.println("No movies found with rating: " + rating);
+        }
+    }
+
+    // Display all movies in forward order
+    public void displayForward() {
+        MovieNode current = head;
+        while (current != null) {
+            System.out.println("Title: " + current.title + ", Director: " + current.director + ", Year: " + current.year + ", Rating: " + current.rating);
+            current = current.next;
+        }
+    }
+
+    // Display all movies in reverse order
+    public void displayReverse() {
+        MovieNode current = tail;
+        while (current != null) {
+            System.out.println("Title: " + current.title + ", Director: " + current.director + ", Year: " + current.year + ", Rating: " + current.rating);
+            current = current.prev;
+        }
+    }
+
+    // Update a movie's rating by title
+    public void updateRating(String title, double newRating) {
+        MovieNode current = head;
+        while (current != null) {
+            if (current.title.equals(title)) {
+                current.rating = newRating;
+                System.out.println("Rating updated for movie: " + title);
+                return;
+            }
+            current = current.next;
+        }
+        System.out.println("Movie not found: " + title);
+    }
+}
+
+// Main class to test the Movie Management System
+public class MovieManagementSystem {
+    public static void main(String[] args) {
+        MovieList movieList = new MovieList();
+
+        // Adding movies
+        movieList.addMovieAtBeginning("Inception", "Christopher Nolan", 2010, 8.8);
+        movieList.addMovieAtEnd("The Dark Knight", "Christopher Nolan", 2008, 9.0);
+        movieList.addMovieAtPosition("Interstellar", "Christopher Nolan", 2014, 8.6, 1);
+
+        // Display movies
+        System.out.println("Movies in forward order:");
+        movieList.displayForward();
+        System.out.println("\nMovies in reverse order:");
+        movieList.displayReverse();
+
+        // Search movies
+        System.out.println("\nSearching for movies by director Christopher Nolan:");
+        movieList.searchByDirector("Christopher Nolan");
+        System.out.println("\nSearching for movies with rating 8.8:");
+        movieList.searchByRating(8.8);
+
+        // Update rating
+        System.out.println("\nUpdating rating for Inception to 9.2:");
+        movieList.updateRating("Inception", 9.2);
+        movieList.displayForward();
+
+        // Remove movie
+        System.out.println("\nRemoving movie The Dark Knight:");
+        movieList.removeMovieByTitle("The Dark Knight");
+        movieList.displayForward();
+    }
+}
