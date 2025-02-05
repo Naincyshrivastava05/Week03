@@ -25,7 +25,6 @@ public class ReadLineByLine {
         String path = "C:\\Gabgemini\\Week03\\String-Manipulation\\src\\main\\java\\filereader\\text.txt";
         String fileText = reader(path);
         System.out.println(fileText);
-
     }
 
 }
