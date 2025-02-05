@@ -46,3 +46,4 @@ public class BinarySearch2DMatrix {
         System.out.println("Target found: " + searchMatrix(matrix, target));  // Expected: false
     }
 }
+
