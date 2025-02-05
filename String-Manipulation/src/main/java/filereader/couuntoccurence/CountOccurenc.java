@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class CountOccurenc {
+public class CountOccurenc{
     public static int wordOccurence(String filePath, String target){
         int count = 0;
 
