@@ -66,6 +66,7 @@ public class CompareSorting {
 
         }
 
+        //Pivot element at its correct position
         private static int partition(int[] arr, int low, int high) {
             int pivot = arr[high];
             int i = low - 1;
